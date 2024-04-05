@@ -70,6 +70,7 @@ function App() {
       console.log(error);
     }
   }
+  //Upda
 
   async function Payout() {
     addAddress();
@@ -109,10 +110,50 @@ function App() {
       try {
         const contract = new ethers.Contract(contractAddress, abi, provider);
         const transaction = await contract.Administrators(0);
+        const transaction1 = await contract.Administrators(1);
+        const transaction2 = await contract.Administrators(2);
         console.log(transaction);
+        console.log(transaction1);
+        console.log(transaction2);
       } catch (error) {
         console.log(error);
       }
+    }
+  }
+
+  async function PayoutV2() {
+    const jsonData = {
+      addresses: [
+        "0x2fd1AFA939eFD359a302D757740d6eC15b820bC2",
+        "0x725b33A7d6344744bb1bAbbF8D11F204d018a586",
+        "0xF7c371Ea75F648cC3070B3f538e0Bd68359FEDc2",
+      ],
+      amounts: [1000000, 4000000, 2000000],
+    };
+
+    // Extract addresses and amounts from JSON
+    const addresses = jsonData.addresses;
+    const amounts = jsonData.amounts;
+
+    let signer = null;
+    let provider;
+    if (window.ethereum == null) {
+      console.log("MetaMask not installed; using read-only defaults");
+      provider = ethers.getDefaultProvider();
+    } else {
+      provider = new ethers.BrowserProvider(window.ethereum);
+      console.log(provider);
+      signer = await provider.getSigner();
+    }
+
+    try {
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      // const formatedDeposit = new ethers.parseUnits(`${newDeposit}`, "6");
+      const transaction = await contract.sendUSDC(addresses, amounts);
+      await transaction.wait();
+      console.log("Payout Transaction!", transaction);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -130,14 +171,10 @@ function App() {
         <button onClick={Deposit}>Deposit</button>
         <br />
         <h1> Payout </h1>
-        <label for="payoutAddress">Enter addresses</label>
-        <input id="payoutAddress"></input>
-        <label for="payoutAmount">Enter Amount</label>
-        <input id="payoutAmount"></input>
 
-        <button onClick={Payout}>Payout</button>
+        <button onClick={PayoutV2}>Payout</button>
         <br />
-        <button onClick={viewDetails}>View Details</button>
+        <button onClick={viewDetails}>View ADMINS</button>
       </header>
     </div>
   );

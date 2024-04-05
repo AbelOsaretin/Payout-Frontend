@@ -3,16 +3,16 @@ export const abi = [
     type: "constructor",
     inputs: [
       { name: "_usdcAddress", type: "address", internalType: "address" },
-      { name: "_admin", type: "address[3]", internalType: "address[3]" },
+      { name: "_itAddress", type: "address", internalType: "address" },
     ],
     stateMutability: "nonpayable",
   },
   {
     type: "function",
-    name: "Administrators",
-    inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-    outputs: [{ name: "", type: "address", internalType: "address" }],
-    stateMutability: "view",
+    name: "AddAdmin",
+    inputs: [{ name: "_admins", type: "address", internalType: "address" }],
+    outputs: [],
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -64,6 +64,13 @@ export const abi = [
   },
   {
     type: "function",
+    name: "RemoveAdmin",
+    inputs: [{ name: "_admins", type: "address", internalType: "address" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "USDCAddress",
     inputs: [],
     outputs: [{ name: "", type: "address", internalType: "address" }],
@@ -102,9 +109,24 @@ export const abi = [
     type: "event",
     name: "PayoutSuccessful",
     inputs: [
-      { name: "", type: "address", indexed: true, internalType: "address" },
-      { name: "", type: "address[]", indexed: true, internalType: "address[]" },
-      { name: "", type: "uint256[]", indexed: true, internalType: "uint256[]" },
+      {
+        name: "Payer",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "Payees",
+        type: "address[]",
+        indexed: true,
+        internalType: "address[]",
+      },
+      {
+        name: "Amount",
+        type: "uint256[]",
+        indexed: true,
+        internalType: "uint256[]",
+      },
     ],
     anonymous: false,
   },
@@ -118,4 +140,4 @@ export const abi = [
     anonymous: false,
   },
 ];
-export const contractAddress = "0xBA348090ee37c31Ff447a556b59D733ad549d65a";
+export const contractAddress = "0x7fd26AA5432f831B99071215BD876fc9472c96cF";
